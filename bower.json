@@ -1,0 +1,23 @@
+{
+  "name": "iron-multiple-ajax-behavior",
+  "authors": [
+    "ankitsorathiya<sorathiya.ankit@gmail.com>"
+  ],
+  "description": "sends multiple xhr requests with one success handler and one failure hander to be invoked after all the requests get serverd",
+  "main": "",
+  "keywords": [
+    "iron-multiple-ajax-behavior"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "iron-ajax": "PolymerElements/iron-ajax#^1.4.3"
+  }
+}

@@ -1,0 +1,76 @@
+<link href="ajax-behavior.html">
+<script>
+    window.ironMultipleAjaxBehavior = {
+        behaviors: [window.ajaxBehavior],
+        properties: {
+            responseType: {
+                type: Object,
+                value: {
+                    SUCCESS: "success",
+                    FAILURE: "failure"
+                },
+                readOnly: true
+            }
+        },
+        _sendMultipleRequests: function (requests, finalListener) {
+            try {
+                //validate all request first and then initiate network call
+                this._validateRequests(requests);
+                for (var index = 0; index < requests.length; index++) {
+                    var request = requests[index];
+                    var additionalValue = {index: index, requests: requests, finalListener: finalListener};
+                    this._sendRequestWithParams(
+                            request.url,
+                            "_successInterceptor",
+                            "failureInterceptor",
+                            request.methodType,
+                            request.params,
+                            additionalValue,
+                            request.isFileUpload);
+                }
+            } catch (e) {
+                throw e;
+            }
+        },
+        _successInterceptor: function (response, additionaValue) {
+            var index = additionaValue.index;
+            var request = additionaValue.requests[index];
+            if (request && request["successListener"] && this[request["successListener"]]) {
+                //call individual success listener
+                this[request["successListener"]](response, request.additionalValue);
+            }
+            this.processResponse(this.responseType.SUCCESS, response, requests, index, additionalValue.finalListener);
+        },
+        failureInterceptor: function (err, additionalValue) {
+            var index = additionaValue.index;
+            var request = additionaValue.requests[index];
+            if (request && request["failureListener"] && this[request["failureListener"]]) {
+                //call individual failure listener
+                this[request["failureListener"]](err, request.additionalValue);
+            }
+            this.processResponse(this.responseType.FAILURE, err, requests, index, additionalValue.finalListener);
+        },
+        processResponse: function (responseType, response, requests, index, finalListener) {
+            var resultValue = {
+                type: responseType,
+                request: requests[index],
+                response: response,
+            };
+            result.push(resultValue);
+            //once every request is executed either with success or failure invoke the final listener
+            if (result.length == requests.length && this[finalListener]) {
+                this[finalListener](result);
+            }
+        },
+        _validateRequests: function (requests) {
+            for (var index in requests) {
+                try {
+                    this._validateRequest(requests[index]);
+                } catch (e) {
+                    throw new Error(e, requests[index]);
+                }
+            }
+            return true;
+        }
+    };
+</script>

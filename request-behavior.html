@@ -1,0 +1,19 @@
+<script>
+    window.requestBehavior =
+            {
+                _getIronRequestObj: function (requestUrl, successListener, failureListener, methodType, params, additionalValue, isFileUpload) {
+                    if (!requestUrl) {
+                        throw new Error("request url can not be empty!");
+                    }
+                    var request = {};
+                    request["url"] = requestUrl;
+                    request["successListener"] = successListener;
+                    request["failureListener"] = failureListener;
+                    request["methodType"] = methodType;
+                    request["params"] = params;
+                    request["additionalValue"] = additionalValue;
+                    request["isFileUpload"] = isFileUpload;
+                    return request;
+                }
+            };
+</script>

@@ -1,0 +1,81 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-ajax/iron-ajax.html">
+<link rel="import" href="request-behavior.html">
+<script>
+    window.ajaxBehavior = {
+        behaviors: [window.requestBehavior],
+        properties: {
+            dataRetrivalMethods: {
+                type: Object,
+                value: {"GET": {}, "HEAD": {}},
+                readOnly: true
+            },
+            dataModifiacationMethods: {
+                type: Object,
+                value: {"POST": {}, "DELETE": {}, "PUT": {}},
+                readOnly: true
+            }
+
+        },
+        _validateRequest: function (request) {
+            if (!request || !request.hasOwnProperty("url")) {
+                throw new Error("Invalid request Object");
+            }
+            if (request.hasOwnProperty("methodType")) {
+                request["methodType"] = request["methodType"].toUpperCase();
+                if (!this.dataRetrivalMethods.hasOwnProperty(request["methodType"]) && !this.dataModificationMethods.hasOwnProperty(request["methodType"])) {
+                    throw new Error(request["methodType"] + "not allowed, Please make sure that it is valid method type");
+                }
+            }
+            return true;
+        },
+        _sendRequestWithParams: function (requestUrl, successListener, failureListener, methodType, params, additionalValue, isFileUpload) {
+            try {
+                this._getIronRequestObj(requestUrl, successListener, failureListener, methodType, params, additionalValue, isFileUpload);
+                this._sendRequest(request);
+            } catch (e) {
+                throw e;
+            }
+        },
+        _sendRequest: function (request) {
+            try {
+                //validate before sending out request.
+                this._validateRequest(request);
+            } catch (e) {
+                throw new Error("invalid request", e);
+            }
+            //create iron ajax to send request
+            var ironAjax = document.createElement("iron-ajax");
+            // attach parameters
+            if (request.hasOwnProperty("params") && request["params"]) {
+                // where to attach params?
+                // as In GET method it should be attached to params
+                if (this.dataRetrivalMethods.hasOwnProperty(request["methodType"])) {
+                    ironAjax.params = params;
+                } else {
+                    ironAjax.body = params;
+                }
+            }
+            //set up content type for file uplaod
+            ironAjax.contentType = request.hasOwnProperty("isFileUpload") && request["isFileUpload"] === true ? undefined : "application/json; charset=utf-8";
+            ironAjax.url = request["url"];
+            ironAjax.method = request["methodType"];
+            ironAjax.addEventListener("response", function (event) {
+                if (request.hasOwnProperty("successListener") && request["successListener"] && this[request["successListener"]]) {
+                    var response = event.detail.response;
+                    this[request["successListener"]](response, request["additionalValue"]);
+                    ironAjax = null;
+                }
+            });
+
+            ironAjax.addEventListener('error', function (err) {
+                if (request.hasOwnProperty("failureListener") && request["failureListener"] && this[request["failureListener"]]) {
+                    this[request["failureListener"]](err, request["additionalValue"]);
+                    ironAjax = null;
+                }
+            });
+            //send the request
+            ironAjax.generateRequest();
+        }
+    };
+</script>
