@@ -3,8 +3,9 @@ It is useful to send multiple XHR requests asynchronously and have one final han
 It is a polymer behvaior and can be easily used with the api based applicaton.
 
 #installation
+```
 bower install iron-multiple-ajax-behavior
-
+```
 #usage
 Let's take a situation where user has to call multiple api call and when all the api calls are executed certain action should be taken.
 This is where iron-multiple-ajax-behavior can be useful.
