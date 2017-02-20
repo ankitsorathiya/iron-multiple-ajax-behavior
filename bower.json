@@ -3,7 +3,7 @@
   "authors": [
     "ankitsorathiya<sorathiya.ankit@gmail.com>"
   ],
-  "description": "sends multiple xhr requests with one success handler and one failure hander to be invoked after all the requests get serverd",
+  "description": "sends multiple xhr requests with one response handler to be invoked after all the requests get serverd",
   "main": "",
   "keywords": [
     "iron-multiple-ajax-behavior"
