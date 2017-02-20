@@ -3,25 +3,22 @@ It is useful to send multiple XHR requests asynchronously and have one final han
 It is a polymer behvaior and can be easily used with the api based applicaton.
 
 #installation
+```
 bower install iron-multiple-ajax-behavior
-
+```
 #usage
 Let's take a situation where user has to call multiple api call and when all the api calls are executed certain action should be taken.
 This is where iron-multiple-ajax-behavior can be useful.
 
-eg. getting data from multiple sources and when all of them are recieved it should show data has been loades successfully.
+#Example
+Getting data from multiple sources and when all of them are recieved it should show data has been loades successfully.
 please refere https://github.com/ankitsorathiya/iron-multiple-ajax-behavior/blob/master/demo/index.html
-Example:
-<!--
+
+First import following behavior
+```html
+<link rel="import" href="iron-multiple-ajax-behavior.html">
 ```
-<custom-element-demo>
-  <template>
-     <link rel="import" href="iron-multiple-ajax-demo.html">
-     <iron-multiple-ajax-demo></iron-multiple-ajax-demo>
-  </template>
-</custom-element-demo>
-```
--->
+Then inject behavior in polymer element 
 ```script
 Polymer({
             is: "iron-multiple-ajax-demo",
@@ -61,4 +58,4 @@ Polymer({
                 this.dataLoaded = true;
             }
         });
-```
+ ```
