@@ -1,9 +1,8 @@
-<link rel="import" href="../polymer/polymer.html">
-<link rel="import" href="../iron-ajax/iron-ajax.html">
+<link rel="import" href="bower_components/polymer/polymer.html">
+<link rel="import" href="bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="request-behavior.html">
 <script>
     window.ajaxBehavior = {
-        behaviors: [window.requestBehavior],
         properties: {
             dataRetrivalMethods: {
                 type: Object,
@@ -17,11 +16,16 @@
             }
 
         },
+        /**
+         * 
+         * @param {type} request
+         * @returns {Boolean}
+         */
         _validateRequest: function (request) {
-            if (!request || !request.hasOwnProperty("url")) {
+            if (!request || !request.hasOwnProperty("url") || !request["url"]) {
                 throw new Error("Invalid request Object");
             }
-            if (request.hasOwnProperty("methodType")) {
+            if (request.hasOwnProperty("methodType") && request["methodType"]) {
                 request["methodType"] = request["methodType"].toUpperCase();
                 if (!this.dataRetrivalMethods.hasOwnProperty(request["methodType"]) && !this.dataModificationMethods.hasOwnProperty(request["methodType"])) {
                     throw new Error(request["methodType"] + "not allowed, Please make sure that it is valid method type");
@@ -29,14 +33,30 @@
             }
             return true;
         },
+        /**
+         * 
+         * @param {type} requestUrl
+         * @param {type} successListener
+         * @param {type} failureListener
+         * @param {type} methodType
+         * @param {type} params
+         * @param {type} additionalValue
+         * @param {type} isFileUpload
+         * @returns {undefined}
+         */
         _sendRequestWithParams: function (requestUrl, successListener, failureListener, methodType, params, additionalValue, isFileUpload) {
             try {
-                this._getIronRequestObj(requestUrl, successListener, failureListener, methodType, params, additionalValue, isFileUpload);
+                var request = this._getIronRequestObj(requestUrl, successListener, failureListener, methodType, params, additionalValue, isFileUpload);
                 this._sendRequest(request);
             } catch (e) {
                 throw e;
             }
         },
+        /**
+         * 
+         * @param {type} request
+         * @returns {undefined}
+         */
         _sendRequest: function (request) {
             try {
                 //validate before sending out request.
@@ -60,17 +80,18 @@
             ironAjax.contentType = request.hasOwnProperty("isFileUpload") && request["isFileUpload"] === true ? undefined : "application/json; charset=utf-8";
             ironAjax.url = request["url"];
             ironAjax.method = request["methodType"];
+            var self = this;
             ironAjax.addEventListener("response", function (event) {
-                if (request.hasOwnProperty("successListener") && request["successListener"] && this[request["successListener"]]) {
+                if (request.hasOwnProperty("successListener") && request["successListener"] && self[request["successListener"]]) {
                     var response = event.detail.response;
-                    this[request["successListener"]](response, request["additionalValue"]);
+                    self[request["successListener"]](response, request["additionalValue"]);
                     ironAjax = null;
                 }
             });
 
             ironAjax.addEventListener('error', function (err) {
-                if (request.hasOwnProperty("failureListener") && request["failureListener"] && this[request["failureListener"]]) {
-                    this[request["failureListener"]](err, request["additionalValue"]);
+                if (request.hasOwnProperty("failureListener") && request["failureListener"] && self[request["failureListener"]]) {
+                    self[request["failureListener"]](err, request["additionalValue"]);
                     ironAjax = null;
                 }
             });
@@ -78,4 +99,5 @@
             ironAjax.generateRequest();
         }
     };
+    window.extendedAjaxBehavior = [window.ajaxBehavior, window.requestBehavior];
 </script>

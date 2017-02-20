@@ -1,0 +1,86 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../iron-multiple-ajax-behavior.html">
+<link rel="import" href="../bower_components/paper-progress/paper-progress.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../request-behavior.html">
+<dom-module is="iron-multiple-ajax-demo">
+    <template>
+        <style include="iron-flex iron-flex-alignment">
+            .box{
+                padding:18px;
+                margin:24px;
+                box-shadow:0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+                border-radius: 5px; 
+                background-color: #fff; 
+                color: #757575;
+            }
+            .title{
+                font-size: 22px;
+                margin: 16px 0; 
+                color: #212121;
+            }
+            .demoData{
+                padding:18px;
+                margin:24px;
+            }
+            .progress{
+                position:fixed;
+                top:0px;
+                width: 100%;
+            }
+        </style>
+        <paper-progress hidden$="[[dataLoaded]]" class="progress" indeterminate></paper-progress>
+        <div class="demoData  layout horizontal center start-justified">
+            <h1 class="flex">Demo Data</h1>
+            <template is="dom-if" if="{{dataLoaded}}">
+                <p>Data Loaded successfully.</p>
+            </template>
+        </div>
+        <template is="dom-repeat" items="{{items}}">
+            <div class="box">
+                <div class="inner">{{item.title}}</div>
+                <div class="title">{{item.body}}</div>
+            </div>
+        </template>
+    </template>    
+    <script>
+        Polymer({
+            is: "iron-multiple-ajax-demo",
+            behaviors: [window.extendedIronMultipleAjaxBehavior],
+            properties: {
+                items: {
+                    type: Array,
+                    value: function () {
+                        return [];
+                    }
+                },
+                dataLoaded: {
+                    type: Boolean,
+                    value: false
+                }
+            },
+            ready: function () {
+                this.initializeData();
+            },
+            initializeData: function () {
+                this.dataLoaded = false;
+                var requests = [];
+                for (var index = 1; index <= 10; index++) {
+                    requests.push(this.getRequestObject(index));
+                }
+                this._sendMultipleRequests(requests, "finalResponseHandler");
+            },
+            getRequestObject: function (index) {
+                var url = 'https://jsonplaceholder.typicode.com/posts/' + index;
+                return this._getIronRequestObj(url, "individualDataRetrival");
+            },
+            individualDataRetrival: function (item) {
+                this.push("items", item);
+            },
+            finalResponseHandler: function (responses) {
+                //this will be invoked when all the requests are served either with success or failure.
+                this.dataLoaded = true;
+            }
+        });
+    </script>
+</dom-module>

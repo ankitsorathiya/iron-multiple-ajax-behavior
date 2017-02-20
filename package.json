@@ -1,0 +1,14 @@
+{
+  "name": "iron-multiple-ajax-behavior",
+  "version": "1.0",
+  "description": "multiple ajax request with single response handler",
+  "authors": [
+    "Ankit Sorathiya"
+  ],
+  "scripts": {},
+  "private": false,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ankitsorathiya/iron-multiple-ajax-behavior.git"
+  }
+}

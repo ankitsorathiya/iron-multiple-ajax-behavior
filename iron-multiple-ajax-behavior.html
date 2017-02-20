@@ -1,7 +1,6 @@
-<link href="ajax-behavior.html">
+<link rel="import" href="ajax-behavior.html">
 <script>
     window.ironMultipleAjaxBehavior = {
-        behaviors: [window.ajaxBehavior],
         properties: {
             responseType: {
                 type: Object,
@@ -12,17 +11,24 @@
                 readOnly: true
             }
         },
+        /**
+         * 
+         * @param {type} requests requests array
+         * @param {type} finalListener method to be invoked after executing all the requests
+         * @returns {undefined}
+         */
         _sendMultipleRequests: function (requests, finalListener) {
             try {
                 //validate all request first and then initiate network call
                 this._validateRequests(requests);
+                var result = [];
                 for (var index = 0; index < requests.length; index++) {
                     var request = requests[index];
-                    var additionalValue = {index: index, requests: requests, finalListener: finalListener};
+                    var additionalValue = {index: index, requests: requests, finalListener: finalListener, result: result};
                     this._sendRequestWithParams(
                             request.url,
                             "_successInterceptor",
-                            "failureInterceptor",
+                            "_failureInterceptor",
                             request.methodType,
                             request.params,
                             additionalValue,
@@ -32,37 +38,64 @@
                 throw e;
             }
         },
-        _successInterceptor: function (response, additionaValue) {
-            var index = additionaValue.index;
-            var request = additionaValue.requests[index];
+        /**
+         * 
+         * @param {type} response response which came from the api call
+         * @param {type} additionalValue 
+         * @returns {undefined}
+         */
+        _successInterceptor: function (response, additionalValue) {
+            var request = additionalValue.requests[additionalValue.index];
             if (request && request["successListener"] && this[request["successListener"]]) {
                 //call individual success listener
                 this[request["successListener"]](response, request.additionalValue);
             }
-            this.processResponse(this.responseType.SUCCESS, response, requests, index, additionalValue.finalListener);
+            this.processResponse(this.responseType.SUCCESS, response, additionalValue);
         },
-        failureInterceptor: function (err, additionalValue) {
-            var index = additionaValue.index;
-            var request = additionaValue.requests[index];
+        /**
+         * 
+         * @param {type} err
+         * @param {type} additionalValue
+         * @returns {undefined}
+         */
+        _failureInterceptor: function (err, additionalValue) {
+            var request = additionalValue.requests[additionalValue.index];
             if (request && request["failureListener"] && this[request["failureListener"]]) {
                 //call individual failure listener
                 this[request["failureListener"]](err, request.additionalValue);
             }
-            this.processResponse(this.responseType.FAILURE, err, requests, index, additionalValue.finalListener);
+            this.processResponse(this.responseType.FAILURE, err, additionalValue);
         },
-        processResponse: function (responseType, response, requests, index, finalListener) {
+        /**
+         * 
+         * @param {type} responseType
+         * @param {type} response
+         * @param {type} requests
+         * @param {type} index
+         * @param {type} finalListener
+         * @returns {undefined}
+         */
+        processResponse: function (responseType, response, additionalValue) {
             var resultValue = {
                 type: responseType,
-                request: requests[index],
-                response: response,
+                request: additionalValue.requests[additionalValue.index],
+                response: response
             };
-            result.push(resultValue);
+            additionalValue.result.push(resultValue);
             //once every request is executed either with success or failure invoke the final listener
-            if (result.length == requests.length && this[finalListener]) {
-                this[finalListener](result);
+            if (additionalValue.result.length == additionalValue.requests.length && this[additionalValue.finalListener]) {
+                this[additionalValue.finalListener](additionalValue.result);
             }
         },
+        /**
+         * 
+         * @param {type} requests
+         * @returns {Boolean}
+         */
         _validateRequests: function (requests) {
+            if (!requests || requests.length === 0) {
+                throw new Error("Request array is empty");
+            }
             for (var index in requests) {
                 try {
                     this._validateRequest(requests[index]);
@@ -73,4 +106,6 @@
             return true;
         }
     };
+    //extending behavior
+    window.extendedIronMultipleAjaxBehavior = [window.ironMultipleAjaxBehavior, window.extendedAjaxBehavior];
 </script>

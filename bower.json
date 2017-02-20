@@ -18,6 +18,8 @@
     "tests"
   ],
   "dependencies": {
-    "iron-ajax": "PolymerElements/iron-ajax#^1.4.3"
+    "webcomponentsjs": "webcomponentsjs#0.7.24",
+    "iron-ajax": "PolymerElements/iron-ajax#^1.4.3",
+    "paper-progress": "PolymerElements/paper-progress#^1.0.11"
   }
 }
