@@ -23,19 +23,5 @@ Example:
 ```
 -->
 ```html
-```
-
-
-<!--
-```
-<custom-element-demo>
-  <template>
-     <link rel="import" href="iron-multiple-ajax-demo.html">
-     <iron-multiple-ajax-demo></iron-multiple-ajax-demo>
-  </template>
-</custom-element-demo>
-```
--->
-```html
 <iron-multiple-ajax-demo></iron-multiple-ajax-demo>
 ```
