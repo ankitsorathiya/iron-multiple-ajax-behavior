@@ -12,6 +12,7 @@ This is where iron-multiple-ajax-behavior can be useful.
 eg. getting data from multiple sources and when all of them are recieved it should show data has been loades successfully.
 please refere https://github.com/ankitsorathiya/iron-multiple-ajax-behavior/blob/master/demo/index.html
 Example:
+<!--
 ```
 <custom-element-demo>
   <template>
@@ -19,4 +20,22 @@ Example:
      <iron-multiple-ajax-demo></iron-multiple-ajax-demo>
   </template>
 </custom-element-demo>
+```
+-->
+```html
+```
+
+
+<!--
+```
+<custom-element-demo>
+  <template>
+     <link rel="import" href="iron-multiple-ajax-demo.html">
+     <iron-multiple-ajax-demo></iron-multiple-ajax-demo>
+  </template>
+</custom-element-demo>
+```
+-->
+```html
+<iron-multiple-ajax-demo></iron-multiple-ajax-demo>
 ```
