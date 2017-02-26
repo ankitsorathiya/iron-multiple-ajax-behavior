@@ -63,3 +63,18 @@ Polymer({
             }
         });
  ```
+ 
+What you can see is, the progress bar get's hidden when all the calls have executed successfully. 
+ <!--
+
+```
+<custom-element-demo>
+  <template>
+    <link rel="import" href="demo/iron-multiple-ajax-demo.html">
+    <iron-multiple-ajax-demo></iron-multiple-ajax-demo>
+  </template>
+</custom-element-demo>
+```
+-->
+ 
+ 
