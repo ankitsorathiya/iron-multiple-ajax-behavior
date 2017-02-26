@@ -64,8 +64,6 @@ Polymer({
         });
  ```
  
-What you can see is, the progress bar get's hidden when all the calls have executed successfully. 
- 
 <!--
 ```
 <custom-element-demo>
