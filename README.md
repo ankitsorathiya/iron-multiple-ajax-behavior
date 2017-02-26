@@ -19,7 +19,7 @@ First import following behavior
 <link rel="import" href="iron-multiple-ajax-behavior.html">
 ```
 Then inject behavior in polymer element 
-```script
+```html
 Polymer({
             is: "iron-multiple-ajax-demo",
             behaviors: [window.extendedIronMultipleAjaxBehavior],
@@ -65,8 +65,8 @@ Polymer({
  ```
  
 What you can see is, the progress bar get's hidden when all the calls have executed successfully. 
- <!--
-
+ 
+<!--
 ```
 <custom-element-demo>
   <template>
@@ -74,6 +74,9 @@ What you can see is, the progress bar get's hidden when all the calls have execu
     <iron-multiple-ajax-demo></iron-multiple-ajax-demo>
   </template>
 </custom-element-demo>
+```
+```html
+<iron-multiple-ajax-demo></iron-multiple-ajax-demo>
 ```
 -->
  
