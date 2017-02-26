@@ -70,8 +70,7 @@ What you can see is, the progress bar get's hidden when all the calls have execu
 ```
 <custom-element-demo>
   <template>
-    <link rel="import" href="demo/iron-multiple-ajax-demo.html">
-    <iron-multiple-ajax-demo></iron-multiple-ajax-demo>
+    <link rel="import" href="/demo/iron-multiple-ajax-demo.html">
   </template>
 </custom-element-demo>
 ```
