@@ -19,8 +19,9 @@ please refere https://github.com/ankitsorathiya/iron-multiple-ajax-behavior/blob
 ```html
 <link rel="import" href="iron-multiple-ajax-behavior.html">
 ```
-###### Then inject behavior in polymer element 
-```html
+###### Inject polymer behaviour into your polymer element.
+
+```
 Polymer({
             is: "iron-multiple-ajax-demo",
             behaviors: [window.extendedIronMultipleAjaxBehavior],
@@ -64,18 +65,4 @@ Polymer({
             }
         });
  ```
- 
-<!--
-```
-<custom-element-demo>
-  <template>
-    <link rel="import" href="/demo/iron-multiple-ajax-demo.html">
-  </template>
-</custom-element-demo>
-```
-```html
-<iron-multiple-ajax-demo></iron-multiple-ajax-demo>
-```
--->
- 
- 
+> You are good to go now!
