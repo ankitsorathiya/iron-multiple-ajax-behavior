@@ -23,46 +23,46 @@ please refere https://github.com/ankitsorathiya/iron-multiple-ajax-behavior/blob
 
 ```
 Polymer({
-            is: "iron-multiple-ajax-demo",
-            behaviors: [window.extendedIronMultipleAjaxBehavior],
-            properties: {
-                items: {
-                    type: Array,
-                    value: function () {
-                        return [];
-                    }
-                },
-                dataLoaded: {
-                    type: Boolean,
-                    value: false
-                }
-            },
-            ready: function () {
-                this.initializeData();
-            },
-            initializeData: function () {
-                this.dataLoaded = false;
-                //prepare all requests to be initiated
-                var requests = [];
-                for (var index = 1; index <= 10; index++) {
-                    requests.push(this.getRequestObject(index));
-                }
-               //once we have all requests, fire multiple requests
-               //the finalResponseHandler will be executed when all the requests are served.
-               this._sendMultipleRequests(requests, "finalResponseHandler");
-            },
-            getRequestObject: function (index) {
-                var url = 'https://jsonplaceholder.typicode.com/posts/' + index;
-                return this._getIronRequestObj(url, "individualDataRetrival");
-            },
-            individualDataRetrival: function (item) {
-                this.push("items", item);
-            },
-            finalResponseHandler: function (responses) {
-            
-                //this will be invoked when all the requests are served either with success or failure.
-                this.dataLoaded = true;
+    is: "iron-multiple-ajax-demo",
+    behaviors: [window.extendedIronMultipleAjaxBehavior],
+    properties: {
+        items: {
+            type: Array,
+            value: function() {
+                return [];
             }
-        });
+        },
+        dataLoaded: {
+            type: Boolean,
+            value: false
+        }
+    },
+    ready: function() {
+        this.initializeData();
+    },
+    initializeData: function() {
+        this.dataLoaded = false;
+        //prepare all requests to be initiated
+        var requests = [];
+        for (var index = 1; index <= 10; index++) {
+            requests.push(this.getRequestObject(index));
+        }
+        //once we have all requests, fire multiple requests
+        //the finalResponseHandler will be executed when all the requests are served.
+        this._sendMultipleRequests(requests, "finalResponseHandler");
+    },
+    getRequestObject: function(index) {
+        var url = 'https://jsonplaceholder.typicode.com/posts/' + index;
+        return this._getIronRequestObj(url, "individualDataRetrival");
+    },
+    individualDataRetrival: function(item) {
+        this.push("items", item);
+    },
+    finalResponseHandler: function(responses) {
+
+        //this will be invoked when all the requests are served either with success or failure.
+        this.dataLoaded = true;
+    }
+});
  ```
 > You are good to go now!
