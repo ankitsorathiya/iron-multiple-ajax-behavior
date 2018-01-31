@@ -71,9 +71,9 @@
                 // where to attach params?
                 // as In GET method it should be attached to params
                 if (this.dataRetrivalMethods.hasOwnProperty(request["methodType"])) {
-                    ironAjax.params = params;
+                    ironAjax.params = request.params;
                 } else {
-                    ironAjax.body = params;
+                    ironAjax.body = request.params;
                 }
             }
             //set up content type for file uplaod
