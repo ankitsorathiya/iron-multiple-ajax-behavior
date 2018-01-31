@@ -44,9 +44,9 @@
          * @param {type} isFileUpload
          * @returns {undefined}
          */
-        _sendRequestWithParams: function (requestUrl, successListener, failureListener, methodType, params, additionalValue, isFileUpload) {
+        _sendRequestWithParams: function (requestUrl, successListener, failureListener, methodType, params, additionalValue, isFileUpload, headers) {
             try {
-                var request = this._getIronRequestObj(requestUrl, successListener, failureListener, methodType, params, additionalValue, isFileUpload);
+                var request = this._getIronRequestObj(requestUrl, successListener, failureListener, methodType, params, additionalValue, isFileUpload, headers);
                 this._sendRequest(request);
             } catch (e) {
                 throw e;
@@ -80,6 +80,7 @@
             ironAjax.contentType = request.hasOwnProperty("isFileUpload") && request["isFileUpload"] === true ? undefined : "application/json; charset=utf-8";
             ironAjax.url = request["url"];
             ironAjax.method = request["methodType"];
+            ironAjax.headers = request["headers"];
             var self = this;
             ironAjax.addEventListener("response", function (event) {
                 if (request.hasOwnProperty("successListener") && request["successListener"] && self[request["successListener"]]) {
