@@ -10,9 +10,10 @@
                  * @param {type} params
                  * @param {type} additionalValue
                  * @param {type} isFileUpload
+                 * @param {type} headers
                  * @returns {window.requestBehavior._getIronRequestObj.request}
                  */
-                _getIronRequestObj: function (requestUrl, successListener, failureListener, methodType, params, additionalValue, isFileUpload) {
+                _getIronRequestObj: function (requestUrl, successListener, failureListener, methodType, params, additionalValue, isFileUpload, headers) {
                     if (!requestUrl) {
                         throw new Error("request url can not be empty!");
                     }
@@ -24,6 +25,7 @@
                     request["params"] = params;
                     request["additionalValue"] = additionalValue;
                     request["isFileUpload"] = isFileUpload;
+                    request["headers"] = headers;
                     return request;
                 }
             };
