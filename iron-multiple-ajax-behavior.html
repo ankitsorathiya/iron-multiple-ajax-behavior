@@ -97,7 +97,7 @@
             if (!requests || requests.length === 0) {
                 throw new Error("Request array is empty");
             }
-            for (var index in requests) {
+            for (var index = 0; index < requests.length; index++) {
                 try {
                     this._validateRequest(requests[index]);
                 } catch (e) {
